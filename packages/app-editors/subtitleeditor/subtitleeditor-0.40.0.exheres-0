@@ -3,7 +3,7 @@
 
 SUMMARY="A gtk-based subtitles editor."
 HOMEPAGE="http://home.gna.org/subtitleeditor/"
-DOWNLOADS="http://download.gna.org/${PN}/${PV}/${PNV}.tar.gz"
+DOWNLOADS="http://download.gna.org/${PN}/${PV/.0/}/${PNV}.tar.gz"
 
 LICENCES="GPL-3"
 SLOT="0"
@@ -22,4 +22,5 @@ DEPENDENCIES="
         media-plugins/gst-plugins-good:0.10
 "
 
-BUGS_TO="julien.durillon@gmailcom"
+BUGS_TO="julien.durillon@gmail.com"
+

@@ -1,0 +1,24 @@
+# Copyright 2013 <name>
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="C++ interface for Gstreamer"
+HOMEPAGE="http://gstreamer.freedesktop.org/bindings/cplusplus.html"
+DOWNLOADS=""
+
+LICENCES="LGPL-2.1"
+SLOT="0.10"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+    build+run:
+        media-libs/gstreamer:0.10[>=0.10.36]
+        media-libs/gst-plugins-base:0.10[>=0.10.36]
+        dev-cpp/glibmm:2.4
+        dev-cpp/libxml++:2.6
+        dev-libs/libsigc++:2
+"
+
+BUGS_TO="julien.durillon@gmail.com"
+
