@@ -14,17 +14,20 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     build+run:
-    dev-qt/qtcore:4
-    dev-qt/qtgui:4
-    dev-qt/qtsvg:4
-    media-gfx/exiv2
-    media-libs/libsdl[audio]
-    media-libs/qimageblitz
+    x11-libs/qt
+    graphics/exiv2
+    media-libs/SDL
+    kde/qimageblitz
     media-libs/taglib
-    >=media-video/ffmpeg-1.0:0[encode]
+    media/ffmpeg[>=1.0]
 "
 
 BUGS_TO="julien.durillon@gmail.com"
 
 DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}"/ffmpeg-2.0.patch )
 
+src_unpack() {
+    mkdir ${PNV} || die
+    cd ${PNV}
+    default_src_unpack
+}

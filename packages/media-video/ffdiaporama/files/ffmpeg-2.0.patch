@@ -1,7 +1,7 @@
 https://bugs.gentoo.org/show_bug.cgi?id=476530
 
---- src/engine/cDeviceModelDef.h	2013-06-19 18:22:52.000000000 +0200
-+++ src/engine/cDeviceModelDef.h	2013-07-21 14:11:48.014827071 +0200
+--- a/src/engine/cDeviceModelDef.h	2013-06-19 18:22:52.000000000 +0200
++++ b/src/engine/cDeviceModelDef.h	2013-07-21 14:11:48.014827071 +0200
 @@ -64,6 +64,11 @@
      #include <libavformat/avformat.h>
      #include <libavformat/avio.h>
@@ -15,8 +15,8 @@ https://bugs.gentoo.org/show_bug.cgi?id=476530
          #define LIBAV_09
          #if defined(USELIBAVRESAMPLE)
 
---- src/engine/cBaseMediaFile.cpp	2013-06-19 18:22:52.000000000 +0200
-+++ src/engine/cBaseMediaFile.cpp	2013-07-21 14:15:18.754228717 +0200
+--- a/src/engine/cBaseMediaFile.cpp	2013-06-19 18:22:52.000000000 +0200
++++ b/src/engine/cBaseMediaFile.cpp	2013-07-21 14:15:18.754228717 +0200
 @@ -2167,7 +2167,11 @@
          }
  
