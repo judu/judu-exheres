@@ -1,7 +1,7 @@
 # Copyright 2013 <name>
 # Distributed under the terms of the GNU General Public License v2
 
-require qt-4
+require qmake4
 
 SUMMARY="ffDiaporama is an application for creating video sequences."
 HOMEPAGE="http://ffdiaporama.tuxfamily.org/?lang=en"
