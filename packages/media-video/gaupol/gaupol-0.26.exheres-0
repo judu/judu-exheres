@@ -1,0 +1,43 @@
+# Copyright 2014 Julien Durillon <julien.durillon@gmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require setup-py [ import=distutils has_bin=true min_versions="3.2" blacklist="2" ]
+
+SUMMARY="Gaupol is an editor for text-based subtitle files."
+DESCRIPTION="
+Gaupol is an editor for text-based subtitle files. It supports multiple
+subtitle file formats and provides means of creating subtitles, editing
+texts and timing subtitles to match video. The user interface is
+designed with attention to batch processing of multiple documents and
+convenience of translating.
+"
+HOMEPAGE="http://home.gna.org/gaupol/index.html"
+DOWNLOADS="http://download.gna.org/${PN}/${PV}/${PNV}.tar.xz"
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+    build+run:
+        x11-libs/gtk+:3
+        gnome-bindings/pygobject:3[>=3.6][python_abis:*(-)?]
+        media-libs/gstreamer:1.0
+        media-plugins/gst-plugins-good:1.0
+        media-plugins/gst-plugins-bad:1.0
+        dev-python/pyenchant[>=1.4.0]
+        app-spell/gtkspell[>=3.0.0]
+        app-text/iso-codes
+        dev-python/chardet
+    run:
+        || (
+            media/mplayer
+            media/vlc
+            media/mpv
+        )
+"
+
+BUGS_TO=""
+
