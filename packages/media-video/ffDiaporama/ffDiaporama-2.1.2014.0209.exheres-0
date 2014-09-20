@@ -1,0 +1,64 @@
+# Copyright 2013 <name>
+# Distributed under the terms of the GNU General Public License v2
+
+require gtk-icon-cache qmake
+
+DISTFILE_PN=${PN,,}
+
+TMT_PV=1.0.2014.0125
+OPENCLI_PV=0.18
+OPENCLI_P=openclipart-${OPENCLI_PV}
+
+SUMMARY="ffDiaporama is an application for creating video sequences."
+HOMEPAGE="http://ffdiaporama.tuxfamily.org/?lang=en"
+DOWNLOADS="
+    http://ffdiaporama.tuxfamily.org/script/GetPackage.php?f=${DISTFILE_PN}_bin_${PV}.tar.gz -> ${PN}_bin_${PV}.tar.gz
+    http://ffdiaporama.tuxfamily.org/script/GetPackage.php?f=${DISTFILE_PN}_rsc_${PV}.tar.gz -> ${PN}_rsc_${PV}.tar.gz
+    openclipart? ( http://openclipart.org/downloads/${OPENCLI_PV}/${OPENCLI_P}-svgonly.tar.bz2 )
+    texturemate? ( http://ffdiaporama.tuxfamily.org/script/GetPackage.php?f=${DISTFILE_PN}_texturemate_${TMT_PV}.tar.gz -> ${PN}_texturemate_${TMT_PV}.tar.gz )
+"
+
+LICENCES="
+    GPL-2
+    openclipart? ( CC0 )
+    texturemate? ( CCPL-Attribution-3.0 )
+"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS="openclipart texturemate"
+
+WORK=${WORKBASE}/${PN}
+
+DEPENDENCIES="
+    build+run:
+        x11-libs/qt[sql][sqlite]
+        graphics/exiv2
+        media-libs/SDL
+        media-libs/taglib
+        media/ffmpeg[>=1.2]
+"
+
+BUGS_TO="julien.durillon@gmail.com"
+
+DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}"/ffmpeg-2.4.patch )
+
+src_prepare() {
+    echo "SUBDIRS += ../ffDiaporama_rsc" >> ffDiaporama.pro || die
+    if option texturemate; then
+        echo "SUBDIRS += ../ffDiaporama_texturemate" >> ffDiaporama.pro || die
+    fi
+    default
+}
+
+src_install() {
+    insinto /usr/share/pixmaps
+    doins ${DISTFILE_PN}.png
+
+    if option openclipart; then
+        dodir /usr/share/ffDiaporama/clipart/openclipart
+        cd "${WORKBASE}"/${OPENCLI_P}-svgonly/clipart || die
+        find . -maxdepth 1 -type d -not -name . -not -empty -exec cp -R '{}' "${IMAGE}"/usr/share/ffDiaporama/clipart/openclipart \; || die
+        find "${IMAGE}"/usr/share/ffDiaporama/clipart/openclipart -type d -not -name . -empty -delete || die
+    fi
+}
+

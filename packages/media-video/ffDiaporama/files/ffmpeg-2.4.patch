@@ -1,0 +1,26 @@
+From 1214050ab2b11c244faa2060e803e718bcb45e94 Mon Sep 17 00:00:00 2001
+From: Julien Durillon <julien.durillon@gmail.com>
+Date: Sun, 21 Sep 2014 13:42:00 +0200
+Subject: [PATCH] Define SWR_CH_MAX for ffmpeg >= 2.4
+
+---
+ ffDiaporama/src/ffDiaporama/engine/cDeviceModelDef.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/ffDiaporama/engine/cDeviceModelDef.h b/src/ffDiaporama/engine/cDeviceModelDef.h
+index 0ecea28..cf9d780 100755
+--- a/src/ffDiaporama/engine/cDeviceModelDef.h
++++ b/src/ffDiaporama/engine/cDeviceModelDef.h
+@@ -84,6 +84,9 @@ extern "C" {
+ #elif (LIBAVUTIL_VERSION_MICRO>=100)&&(LIBAVCODEC_VERSION_MICRO>=100)&&(LIBAVFORMAT_VERSION_MICRO>=100)&&(LIBAVDEVICE_VERSION_MICRO>=100)&&(LIBAVFILTER_VERSION_MICRO>=100)&&(LIBSWSCALE_VERSION_MICRO>=100)
+     #define FFMPEG
+     #include "libswresample/swresample.h"
++    #ifndef SWR_CH_MAX
++        #define SWR_CH_MAX 32
++    #endif
+     #define RESAMPLE_MAX_CHANNELS SWR_CH_MAX
+     #include "libavfilter/avcodec.h"
+     #include "libavfilter/buffersink.h"
+-- 
+2.1.0
+
