@@ -1,0 +1,48 @@
+# Copyright 2017 Julien Durillon <julien.durillon@gmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require cmake [ api=2 cmake_minimum_version=2.8 ] gsettings
+
+SUMMARY="An extension to GTK+"
+DESCRIPTION="
+An extension to GTK+ that provides several useful widgets and classes to ease application development.
+
+Designed for elementary OS.
+"
+HOMEPAGE="https://launchpad.net/granite"
+DOWNLOADS="https://launchpad.net/granite/$(ever range 1-2)/${PV}/+download/${PNV}.tar.xz"
+
+LICENCES="LGPL-3"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        dev-lang/vala[>=0.23.2]
+    build+run:
+        base/libgee:0.8[gobject-introspection]
+        dev-libs/glib:2
+        x11-libs/gtk+:3[>=3.14][gobject-introspection]
+"
+
+BUGS_TO="julien.durillon@gmail.com"
+
+
+CMAKE_SRC_CONFIGURE_PARAMS=(
+    -DCMAKE_INSTALL_DATAROOTDIR:PATH=/usr/share
+    -DGSETTINGS_LOCALINSTALL=OFF
+)
+
+DEFAULT_SRC_PREPARE_PATCHES+=(
+    "${FILES}"/0001-Fix-install-paths.patch
+)
+
+src_prepare() {
+    cmake_src_prepare
+
+    edo sed -i \
+        "s:PKG_CONFIG_EXECUTABLE pkg-config:PKG_CONFIG_EXECUTABLE $(exhost --tool-prefix)pkg-config:" \
+        "${CMAKE_SOURCE}"/cmake/GSettings.cmake
+}
+

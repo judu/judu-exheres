@@ -1,0 +1,73 @@
+From 6d2a33bb8a6b98ead180e7b317484074db8b59da Mon Sep 17 00:00:00 2001
+From: Julien Durillon <julien.durillon@gmail.com>
+Date: Wed, 18 Jan 2017 04:24:58 +0100
+Subject: [PATCH] Fix install paths
+
+---
+ CMakeLists.txt           |  2 +-
+ cmake/Translations.cmake |  2 +-
+ demo/CMakeLists.txt      |  2 +-
+ icons/CMakeLists.txt     | 16 ++++++++--------
+ 4 files changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 7257545..a4a60b1 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -13,7 +13,7 @@ set (PKG_GIR_NAME Granite)
+ 
+ list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/)
+ 
+-set (RESOURCES_DIR ${CMAKE_INSTALL_PREFIX}/share/${PKG_NAME}/)
++set (RESOURCES_DIR ${CMAKE_INSTALL_DATAROOTDIR}/${PKG_NAME}/)
+ set (GETTEXT_PACKAGE ${PKG_NAME})
+ 
+ set (CPACK_PACKAGE_VERSION ${PKG_VERSION})
+diff --git a/cmake/Translations.cmake b/cmake/Translations.cmake
+index 9cfe777..a62c39e 100644
+--- a/cmake/Translations.cmake
++++ b/cmake/Translations.cmake
+@@ -18,7 +18,7 @@ macro (add_translations_directory NLS_PACKAGE)
+         add_custom_command (TARGET i18n COMMAND ${MSGFMT_EXECUTABLE} -o ${MO_OUTPUT} ${PO_INPUT})
+ 
+         install (FILES ${MO_OUTPUT} DESTINATION
+-            share/locale/${PO_INPUT_BASE}/LC_MESSAGES
++           ${CMAKE_INSTALL_DATAROOTDIR}/locale/${PO_INPUT_BASE}/LC_MESSAGES
+             RENAME ${NLS_PACKAGE}.mo)
+     endforeach (PO_INPUT ${PO_FILES})
+ endmacro (add_translations_directory)
+diff --git a/demo/CMakeLists.txt b/demo/CMakeLists.txt
+index 03a8f19..cfa82b2 100644
+--- a/demo/CMakeLists.txt
++++ b/demo/CMakeLists.txt
+@@ -22,4 +22,4 @@ OPTIONS
+ add_executable (${EXEC_NAME} ${VALA_C})
+ target_link_libraries (${EXEC_NAME} ${PKG_NAME} ${DEPS_LIBRARIES})
+ install (TARGETS ${EXEC_NAME} RUNTIME DESTINATION bin)
+-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/granite-demo.desktop DESTINATION share/applications)
++install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/granite-demo.desktop DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
+diff --git a/icons/CMakeLists.txt b/icons/CMakeLists.txt
+index c22d873..be77a47 100644
+--- a/icons/CMakeLists.txt
++++ b/icons/CMakeLists.txt
+@@ -1,8 +1,8 @@
+-install(FILES 16x16/open-menu.svg DESTINATION share/icons/hicolor/16x16/actions/)
+-install(FILES 16x16/appointment.svg DESTINATION share/icons/hicolor/16x16/actions/)
+-install(FILES 22x22/open-menu.svg DESTINATION share/icons/hicolor/22x22/actions/)
+-install(FILES 24x24/open-menu.svg DESTINATION share/icons/hicolor/24x24/actions/)
+-install(FILES 24x24/appointment.svg DESTINATION share/icons/hicolor/24x24/actions/)
+-install(FILES 32x32/open-menu.svg DESTINATION share/icons/hicolor/32x32/actions/)
+-install(FILES 48x48/open-menu.svg DESTINATION share/icons/hicolor/48x48/actions/)
+-install(FILES scalable/open-menu-symbolic.svg DESTINATION share/icons/hicolor/scalable/actions/)
+\ No newline at end of file
++install(FILES 16x16/open-menu.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/actions/)
++install(FILES 16x16/appointment.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/actions/)
++install(FILES 22x22/open-menu.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/22x22/actions/)
++install(FILES 24x24/open-menu.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/24x24/actions/)
++install(FILES 24x24/appointment.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/24x24/actions/)
++install(FILES 32x32/open-menu.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/32x32/actions/)
++install(FILES 48x48/open-menu.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/actions/)
++install(FILES scalable/open-menu-symbolic.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/actions/)
+-- 
+2.11.0
+
