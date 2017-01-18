@@ -1,0 +1,51 @@
+# Copyright 2017 Julien Durillon<julien.durillon@gmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require cmake [ api=2 cmake_minimum_version=2.8 ] gsettings
+
+SUMMARY="The simple, powerful, and sexy file manager from elementary."
+HOMEPAGE="https://launchpad.net/pantheon-files"
+DOWNLOADS="https://launchpad.net/${PN}/$(ever range 1-2).x/${PV}/+download/${PNV}.tar.xz"
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        dev-lang/vala[>=0.26]
+    build+run:
+        base/libgee:0.8
+        dev-db/sqlite:3
+        dev-libs/glib:2[>=2.29.0]
+        dev-libs/zeitgeist:2.0
+        x11-libs/granite[>=0.4.0]
+        x11-libs/gtk+:3[>=3.14]
+        x11-libs/pango[>=1.1.2]
+"
+
+BUGS_TO="julien.durillon@gmail.com"
+
+CMAKE_SRC_CONFIGURE_PARAMS=(
+    -DWITH_UNITY=no
+    -DCMAKE_INSTALL_DATAROOTDIR:PATH=/usr/share
+    -DGSETTINGS_LOCALINSTALL=OFF
+)
+
+DEFAULT_SRC_PREPARE_PATCHES+=(
+    "${FILES}"/0001-Fix-install-paths.patch
+)
+
+src_prepare() {
+    cmake_src_prepare
+
+    edo sed -i \
+        "s:PKG_CONFIG_EXECUTABLE pkg-config:PKG_CONFIG_EXECUTABLE $(exhost --tool-prefix)pkg-config:" \
+        "${CMAKE_SOURCE}"/cmake/GSettings.cmake
+}
+
+src_test() {
+    einfo "Disabling test because needs Xorg server running"
+}
+

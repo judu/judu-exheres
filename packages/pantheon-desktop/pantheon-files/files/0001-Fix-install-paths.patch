@@ -1,0 +1,121 @@
+From 9331137129b9c4aa8309ee0d4fc9dd55c4dc119b Mon Sep 17 00:00:00 2001
+From: Julien Durillon <julien.durillon@gmail.com>
+Date: Wed, 18 Jan 2017 03:34:22 +0100
+Subject: [PATCH] Fix install paths
+
+---
+ CMakeLists.txt                         | 6 +++---
+ cmake/GObjectIntrospectionMacros.cmake | 4 ++--
+ cmake/Translations.cmake               | 2 +-
+ data/CMakeLists.txt                    | 8 ++++----
+ libcore/CMakeLists.txt                 | 6 +++---
+ libwidgets/CMakeLists.txt              | 4 ++--
+ 6 files changed, 15 insertions(+), 15 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index cf65029..687893f 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -8,10 +8,10 @@ enable_testing ()
+ include (GNUInstallDirs)
+ list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+ set (GETTEXT_PACKAGE ${CMAKE_PROJECT_NAME})
+-set (PIXMAP_DIR "${CMAKE_INSTALL_PREFIX}/share/pixmaps/${CMAKE_PROJECT_NAME}/")
+-set (GNOMELOCALEDIR "${CMAKE_INSTALL_PREFIX}/share/locale/")
++set (PIXMAP_DIR "${CMAKE_INSTALL_DATAROOTDIR}/pixmaps/${CMAKE_PROJECT_NAME}/")
++set (GNOMELOCALEDIR "${CMAKE_INSTALL_DATAROOTDIR}/locale/")
+ set (PLUGIN_DIR "${CMAKE_INSTALL_FULL_LIBDIR}/${CMAKE_PROJECT_NAME}/plugins/")
+-set (UI_DIR "${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/ui/")
++set (UI_DIR "${CMAKE_INSTALL_DATAROOTDIR}/${CMAKE_PROJECT_NAME}/ui/")
+ set (PACKAGE_VERSION 0.3.1)
+ set (VERSION 0.3.1)
+ configure_file (${CMAKE_SOURCE_DIR}/config.h.cmake ${CMAKE_BINARY_DIR}/config.h)
+diff --git a/cmake/GObjectIntrospectionMacros.cmake b/cmake/GObjectIntrospectionMacros.cmake
+index 6a0dc0b..5053579 100644
+--- a/cmake/GObjectIntrospectionMacros.cmake
++++ b/cmake/GObjectIntrospectionMacros.cmake
+@@ -11,7 +11,7 @@ macro(add_target_gir TARGET_NAME GIR_NAME HEADER CFLAGS GRANITE_VERSION)
+             -L${CMAKE_CURRENT_BINARY_DIR}
+             --nsversion=${GRANITE_VERSION} ${HEADER})")
+     install(CODE "execute_process(COMMAND g-ir-compiler ${CMAKE_CURRENT_BINARY_DIR}/${GIR_NAME}-${GRANITE_VERSION}.gir -o ${CMAKE_CURRENT_BINARY_DIR}/${GIR_NAME}-${GRANITE_VERSION}.typelib)")
+-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${GIR_NAME}-${GRANITE_VERSION}.gir DESTINATION share/gir-1.0/)
++    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${GIR_NAME}-${GRANITE_VERSION}.gir DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gir-1.0/)
+     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${GIR_NAME}-${GRANITE_VERSION}.typelib DESTINATION lib/girepository-1.0/)
+ endmacro()
+ 
+@@ -29,6 +29,6 @@ macro(add_target_gir_with_executable TARGET_NAME EXE_NAME GIR_NAME HEADER EXE_HE
+             -I${CMAKE_CURRENT_BINARY_DIR}
+             --nsversion=${GRANITE_VERSION} ${HEADER} ${EXE_HEADER})")
+     install(CODE "execute_process(COMMAND g-ir-compiler ${CMAKE_CURRENT_BINARY_DIR}/${GIR_NAME}-${GRANITE_VERSION}.gir -o ${CMAKE_CURRENT_BINARY_DIR}/${GIR_NAME}-${GRANITE_VERSION}.typelib)")
+-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${GIR_NAME}-${GRANITE_VERSION}.gir DESTINATION share/gir-1.0/)
++    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${GIR_NAME}-${GRANITE_VERSION}.gir DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/gir-1.0/)
+     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${GIR_NAME}-${GRANITE_VERSION}.typelib DESTINATION lib/girepository-1.0/)
+ endmacro()
+diff --git a/cmake/Translations.cmake b/cmake/Translations.cmake
+index e8e42ed..1595b9c 100644
+--- a/cmake/Translations.cmake
++++ b/cmake/Translations.cmake
+@@ -19,7 +19,7 @@ macro (add_translations_directory NLS_PACKAGE)
+         add_custom_command (TARGET i18n COMMAND ${MSGFMT_EXECUTABLE} -o ${MO_OUTPUT} ${PO_INPUT})
+ 
+         install (FILES ${MO_OUTPUT} DESTINATION
+-            share/locale/${PO_INPUT_BASE}/LC_MESSAGES
++           ${CMAKE_INSTALL_DATAROOTDIR}/locale/${PO_INPUT_BASE}/LC_MESSAGES
+             RENAME ${NLS_PACKAGE}.mo)
+     endforeach (PO_INPUT ${PO_FILES})
+ endmacro (add_translations_directory)
+diff --git a/data/CMakeLists.txt b/data/CMakeLists.txt
+index 8075b08..436bde6 100644
+--- a/data/CMakeLists.txt
++++ b/data/CMakeLists.txt
+@@ -7,11 +7,11 @@ configure_file(net.launchpad.pantheon-files.policy.cmake ${CMAKE_CURRENT_BINARY_
+ configure_file_translation(pantheon-files.desktop.in ${CMAKE_CURRENT_BINARY_DIR}/org.pantheon.files.desktop ${CMAKE_SOURCE_DIR}/po/)
+ configure_file_translation(org.pantheon.files.appdata.xml.in ${CMAKE_CURRENT_BINARY_DIR}/org.pantheon.files.appdata.xml ${CMAKE_SOURCE_DIR}/po/)
+ 
+-install (FILES ${CMAKE_CURRENT_BINARY_DIR}/org.pantheon.files.appdata.xml DESTINATION share/appdata)
+-install (FILES ${CMAKE_CURRENT_BINARY_DIR}/org.pantheon.files.desktop DESTINATION share/applications)
+-install (FILES ${CMAKE_CURRENT_BINARY_DIR}/pantheon-files.service DESTINATION share/dbus-1/services/)
++install (FILES ${CMAKE_CURRENT_BINARY_DIR}/org.pantheon.files.appdata.xml DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/appdata)
++install (FILES ${CMAKE_CURRENT_BINARY_DIR}/org.pantheon.files.desktop DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
++install (FILES ${CMAKE_CURRENT_BINARY_DIR}/pantheon-files.service DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/dbus-1/services/)
+ install (PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/pantheon-files-pkexec DESTINATION bin)
+-install (FILES ${CMAKE_CURRENT_BINARY_DIR}/net.launchpad.pantheon-files.policy DESTINATION share/polkit-1/actions/)
++install (FILES ${CMAKE_CURRENT_BINARY_DIR}/net.launchpad.pantheon-files.policy DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/polkit-1/actions/)
+ 
+ add_subdirectory (icons)
+ add_subdirectory (schemas)
+diff --git a/libcore/CMakeLists.txt b/libcore/CMakeLists.txt
+index a9a0847..74b96f7 100644
+--- a/libcore/CMakeLists.txt
++++ b/libcore/CMakeLists.txt
+@@ -104,9 +104,9 @@ set (C_HEADER_FILES
+ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/${PKGNAME}.pc.cmake ${CMAKE_CURRENT_BINARY_DIR}/${PKGNAME}.pc)
+ install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${PKGNAME}.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/)
+ install (FILES ${CMAKE_CURRENT_BINARY_DIR}/pantheon-files-core.h DESTINATION include/pantheon-files-core/)
+-install (FILES ${CMAKE_CURRENT_BINARY_DIR}/pantheon-files-core.vapi DESTINATION share/vala/vapi)
+-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/pantheon-files-core.deps DESTINATION share/vala/vapi)
+-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/pantheon-files-core-C.vapi DESTINATION share/vala/vapi)
++install (FILES ${CMAKE_CURRENT_BINARY_DIR}/pantheon-files-core.vapi DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/vala/vapi)
++install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/pantheon-files-core.deps DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/vala/vapi)
++install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/pantheon-files-core-C.vapi DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/vala/vapi)
+ install (FILES ${C_HEADER_FILES} DESTINATION include/pantheon-files-core/)
+ # Check for the deps
+ 
+diff --git a/libwidgets/CMakeLists.txt b/libwidgets/CMakeLists.txt
+index 45ff6d8..b9aba3e 100644
+--- a/libwidgets/CMakeLists.txt
++++ b/libwidgets/CMakeLists.txt
+@@ -65,8 +65,8 @@ GENERATE_HEADER
+ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/${PKGNAME}.pc.cmake ${CMAKE_CURRENT_BINARY_DIR}/${PKGNAME}.pc)
+ install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${PKGNAME}.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/)
+ install (FILES ${CMAKE_CURRENT_BINARY_DIR}/pantheon-files-widgets.h DESTINATION include/pantheon-files-widgets/)
+-install (FILES ${CMAKE_CURRENT_BINARY_DIR}/pantheon-files-widgets.vapi DESTINATION share/vala/vapi)
+-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/pantheon-files-widgets.deps DESTINATION share/vala/vapi)
++install (FILES ${CMAKE_CURRENT_BINARY_DIR}/pantheon-files-widgets.vapi DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/vala/vapi)
++install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/pantheon-files-widgets.deps DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/vala/vapi)
+ install (FILES ${C_HEADER_FILES} DESTINATION include/pantheon-files-widgets/)
+ 
+ add_library (${PKGNAME} SHARED ${VALA_C})
+-- 
+2.11.0
+
